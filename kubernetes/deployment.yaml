@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-k8s-app
+  labels:
+    app: my-k8s-app
+spec:
+  replicas: 1  
+  selector:
+    matchLabels:
+      app: my-k8s-app
+  template:
+    metadata:
+      labels:
+        app: my-k8s-app
+    spec:
+      containers:
+        - name: my-k8s-container
+          image: lokesh0423/my-k8s-app:1.0  # DockerHub image name
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: PORT
+
