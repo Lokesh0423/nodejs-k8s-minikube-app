@@ -25,3 +25,5 @@ kubectl expose deployment my-k8s-app --type=NodePort --port=3000
 minikube service my-k8s-app
 # nodejs-k8s-minikube-app
 # CI trigger
+# retry trigger
+# retry trigger
