@@ -27,3 +27,4 @@ minikube service my-k8s-app
 # CI trigger
 # retry trigger
 # retry trigger
+# retry push
