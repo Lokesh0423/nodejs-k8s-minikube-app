@@ -1,6 +1,6 @@
 # Node.js App on Kubernetes
 
-This is a  Node.js application deployed to Kubernetes using Minikube.  
+This is a  Node.js application deployed to Kubernetes using Minikube. 
 It includes a `Dockerfile` and a basic `server.js` file, and demonstrates how to:
 
 - Build Docker images  
