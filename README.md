@@ -28,3 +28,4 @@ minikube service my-k8s-app
 # retry trigger
 # retry trigger
 # retry push
+# retry auth fix
