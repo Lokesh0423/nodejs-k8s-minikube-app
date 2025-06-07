@@ -29,3 +29,4 @@ minikube service my-k8s-app
 # retry trigger
 # retry push
 # retry auth fix
+# nodejs-secret-app
