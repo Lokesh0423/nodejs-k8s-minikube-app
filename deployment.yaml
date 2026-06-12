@@ -1,9 +1,12 @@
-apiVersion: apps/v1  
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: secret-app
+  labels:
+    app: secret-app
+    version: "1.0"
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: secret-app
@@ -15,7 +18,7 @@ spec:
       containers:
         - name: app
           image: nodejs-secret-app:latest
-          imagePullPolicy: Never         
+          imagePullPolicy: Never
           ports:
             - containerPort: 3000
           env:
@@ -29,4 +32,24 @@ spec:
                 secretKeyRef:
                   name: my-secret
                   key: DB_PASS
-
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
