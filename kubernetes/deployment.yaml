@@ -1,28 +1,66 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-k8s-app
+  name: secret-app
   labels:
-    app: my-k8s-app
+    app: secret-app
+    version: "1.0"
 spec:
-  replicas: 1  
+  replicas: 2
   selector:
     matchLabels:
-      app: my-k8s-app
+      app: secret-app
   template:
     metadata:
       labels:
-        app: my-k8s-app
+        app: secret-app
     spec:
       containers:
-        - name: my-k8s-container
-          image: lokesh0423/my-k8s-app:1.0  # DockerHub image name
+        - name: app
+          image: nodejs-secret-app:latest
+          imagePullPolicy: Never
           ports:
             - containerPort: 3000
           env:
             - name: PORT
               valueFrom:
                 configMapKeyRef:
-                  name: my-config
+                  name: app-config
                   key: PORT
+            - name: APP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: APP_ENV
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: my-secret
+                  key: API_KEY
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: my-secret
+                  key: DB_PASS
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
 
